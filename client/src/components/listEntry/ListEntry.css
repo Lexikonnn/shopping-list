@@ -1,0 +1,32 @@
+@import '../../Root.css';
+
+.list-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+
+    background-color: var(--gray);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+
+    width: 450px;
+    padding: 16px 32px;
+}
+
+.list-container.completed {
+    border: 2px solid var(--green)
+  }
+
+.list-wrapper{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+
+    margin: 5px;
+}
+
+.list-wrapper:nth-child(2) {
+    margin-top: auto;
+}
+

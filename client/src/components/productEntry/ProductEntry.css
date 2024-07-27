@@ -1,0 +1,32 @@
+@import '../../Root.css';
+
+.product-wrapper{
+    display: inline-flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+    align-items: top;
+    justify-content: start;
+    gap: 25px;
+}
+
+.product-wrapper .content-text:nth-child(2){
+    padding-top: 6px;
+}
+
+.bin-icon{
+    cursor: pointer;
+    user-select: none;
+    height: 25px;
+    width: auto;
+
+    padding: 2px;
+    transition: 200ms;
+}
+
+.bin-icon:hover{
+    scale: 105%;
+    rotate: 15deg;
+
+    transition: 200ms;
+}

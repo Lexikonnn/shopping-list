@@ -1,0 +1,72 @@
+:root {
+  --white: #F3F3F3;
+  --black: #171717;
+  --gray: #EAEAEA;
+  --green: #4FD09A;
+  --red: #D04F4F;
+
+  --shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(105, 145, 91, 0.04) 0px 10px 10px -5px;
+
+
+  --roboto: 'Roboto', sans-serif;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+
+  padding-top: 35px;
+  gap: 70px;
+}
+
+.main-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: start;
+  gap: 20px;
+}
+
+.content-text {
+  font-size: 20px;
+  color: var(--black);
+  font-family: var(--roboto);
+  font-weight: 400;
+
+  max-width: 150px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.card-title {
+  font-size: 23px;
+  letter-spacing: 1px;
+  font-weight: 400;
+  color: var(--black);
+  font-family: var(--roboto);
+
+  max-width: 180px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.title {
+  font-size: 30px;
+  letter-spacing: 1px;
+  font-weight: 500;
+  color: var(--black);
+  font-family: var(--roboto);
+}
+
+.card-section {
+  display: inline-flex;
+  background-color: var(--gray);
+  box-shadow: var(--shadow);
+  border-radius: 8px;
+}

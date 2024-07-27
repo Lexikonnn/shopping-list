@@ -1,0 +1,45 @@
+@import '../../../Root.css';
+
+.btn {
+    cursor: pointer;
+    user-select: none;
+    
+
+    font-size: 18px;
+    letter-spacing: 1px;
+    font-family: var(--roboto);
+
+    border-radius: 8px;
+    padding: 10px 20px;
+
+    transition-property: transform;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+}
+
+.btn-green {
+    color: var(--white);
+    background-color: var(--green);
+    border: 3px solid var(--green);
+}
+
+.btn-outline {
+    color: var(--green);
+    background-color: var(--white);
+    border: 3px solid var(--green);
+}
+
+.btn-red{
+    color: var(--white);
+    background-color: var(--red);
+    border: 3px solid var(--red);
+}
+
+.btn-none {
+    visibility: hidden;
+}
+
+.btn:hover{
+    transform: translateY(-8px);
+}
