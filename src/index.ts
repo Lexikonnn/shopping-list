@@ -1,23 +1,24 @@
 import express, { Request, Response } from 'express';
-import cors from 'cors';
-import connectDB from './db';
-import itemRoutes from './routes/items';
+
+
+
+const Express = require("express");
+const Mongoclient=require("mongodb").MongoClient;
+const cors = require("cors");
+const multer=require("multer");
 
 const app = express();
-const port = 3000;
-
 app.use(cors());
-app.use(express.json());
-app.use('/api', itemRoutes);
 
-// Připojení k databázi
-connectDB();
 
-// Základní routa
-app.get('/', (req: Request, res: Response) => {
-  res.send('Welcome to the API');
-});
 
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
-});
+const CONNECTION_STRING = "mongodb+srv://admin:<hesloadmin>@cluster0.xqjtq96.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
+const DATABASENAME = "shoppinglistdb";
+
+app.listen(5038,() => {
+  Mongoclient.connect(CONNECTION_STRING,(error: any,client : any) =>{
+     const database=client.db(DATABASENAME);
+     console.log("Mongo DB CONNECTION SUCCESS!")
+  } )
+})

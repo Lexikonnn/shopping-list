@@ -1,14 +1,14 @@
 import { Router, Request, Response } from 'express';
-import Item from '../models/Item';
+import Product from '../models/Product';
 
 const router = Router();
 
 // Vytvoření položky
-router.post('/items', async (req: Request, res: Response) => {
+router.post('/products', async (req: Request, res: Response) => {
   try {
-    const newItem = new Item(req.body);
-    const item = await newItem.save();
-    res.status(201).json(item);
+    const newProduct = new Product(req.body);
+    const product = await newProduct.save();
+    res.status(201).json(product);
   } catch (err) {
     if (err instanceof Error) {
       res.status(400).json({ message: err.message });
@@ -19,10 +19,10 @@ router.post('/items', async (req: Request, res: Response) => {
 });
 
 // Získání všech položek
-router.get('/items', async (req: Request, res: Response) => {
+router.get('/products', async (req: Request, res: Response) => {
   try {
-    const items = await Item.find();
-    res.json(items);
+    const products = await Product.find();
+    res.json(products);
   } catch (err) {
     if (err instanceof Error) {
       res.status(500).json({ message: err.message });
@@ -33,11 +33,11 @@ router.get('/items', async (req: Request, res: Response) => {
 });
 
 // Získání jedné položky
-router.get('/items/:id', async (req: Request, res: Response) => {
+router.get('/products/:id', async (req: Request, res: Response) => {
   try {
-    const item = await Item.findById(req.params.id);
-    if (item) {
-      res.json(item);
+    const product = await Product.findById(req.params.id);
+    if (product) {
+      res.json(product);
     } else {
       res.status(404).json({ message: 'Item not found' });
     }
@@ -51,13 +51,13 @@ router.get('/items/:id', async (req: Request, res: Response) => {
 });
 
 // Aktualizace položky
-router.put('/items/:id', async (req: Request, res: Response) => {
+router.put('/products/:id', async (req: Request, res: Response) => {
   try {
-    const item = await Item.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (item) {
-      res.json(item);
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (product) {
+      res.json(product);
     } else {
-      res.status(404).json({ message: 'Item not found' });
+      res.status(404).json({ message: 'product not found' });
     }
   } catch (err) {
     if (err instanceof Error) {
@@ -69,13 +69,13 @@ router.put('/items/:id', async (req: Request, res: Response) => {
 });
 
 // Smazání položky
-router.delete('/items/:id', async (req: Request, res: Response) => {
+router.delete('/products/:id', async (req: Request, res: Response) => {
   try {
-    const item = await Item.findByIdAndDelete(req.params.id);
-    if (item) {
-      res.json({ message: 'Item deleted' });
+    const product = await Product.findByIdAndDelete(req.params.id);
+    if (product) {
+      res.json({ message: 'product deleted' });
     } else {
-      res.status(404).json({ message: 'Item not found' });
+      res.status(404).json({ message: 'product not found' });
     }
   } catch (err) {
     if (err instanceof Error) {
@@ -87,7 +87,7 @@ router.delete('/items/:id', async (req: Request, res: Response) => {
 });
 
 // Přidání nového produktu
-router.post('/items', async (req: Request, res: Response) => {
+router.post('/products', async (req: Request, res: Response) => {
     const { name, id } = req.body;
   
     if (!name || !id) {
@@ -95,9 +95,9 @@ router.post('/items', async (req: Request, res: Response) => {
     }
   
     try {
-      const newItem = new Item({ name, id });
-      const item = await newItem.save();
-      res.status(201).json(item);
+      const newProduct = new Product({ name, id });
+      const product = await newProduct.save();
+      res.status(201).json(product);
     } catch (err) {
       if (err instanceof Error) {
         res.status(400).json({ message: err.message });

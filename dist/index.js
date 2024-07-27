@@ -1,0 +1,25 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+const db_1 = __importDefault(require("./db"));
+const products_1 = __importDefault(require("./routes/products"));
+const lists_1 = __importDefault(require("./routes/lists"));
+const app = (0, express_1.default)();
+const port = 3001; // Ověřte, že port je správně nastaven
+app.use((0, cors_1.default)());
+app.use(express_1.default.json());
+app.use('/api/products', products_1.default);
+app.use('/api/lists', lists_1.default);
+// Připojení k databázi
+(0, db_1.default)();
+// Základní routa
+app.get('/', (req, res) => {
+    res.send('Welcome to the API');
+});
+app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+});
