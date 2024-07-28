@@ -1,5 +1,6 @@
 import './ListEntry.css';
 import Btn from '../common/button/Btn';
+import InputField from '../common/inputField/InputField';
 
 type ListEntryProps = {
   id: number;
@@ -20,14 +21,9 @@ const ListEntry: React.FC<ListEntryProps> = ({ id, name, isCompleted, onEntryCli
   return (
     <div className={`list-container ${isCompleted ? 'completed' : ''}`}>
       <div className='list-wrapper'>
-        <h4 className='card-title'>{name}</h4>
+        {isEditModeList ? <InputField placeholder='Name' value={ name } type='text'/> : <h4 className='card-title'>{name}</h4>}
       </div>
       <div className='list-wrapper'>
-      <Btn
-          content={ isEditModeList ? 'Rename' : null }
-          type={ isEditModeList ? 'green' : 'none' }
-          onClick={ ()=>{} }
-        />
         <Btn
           content={ isCompleted === true ? 'Completed' : isEditModeList === true ? 'Delete' : 'View' }
           type={ isCompleted === true ? 'outline' : isEditModeList === true ? 'red' : 'green' }

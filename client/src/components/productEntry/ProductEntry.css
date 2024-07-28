@@ -5,6 +5,7 @@
     flex-direction: row;
 
     justify-content: space-between;
+    align-items: center;
     align-items: top;
     justify-content: start;
     gap: 25px;

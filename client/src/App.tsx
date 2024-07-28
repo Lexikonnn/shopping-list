@@ -113,7 +113,7 @@ function App() {
       isEditModeList={isEditModeList}
     />
   )} onEntryClick={handleViewList} />
-  const BottomComponentLists: React.FC = () => <Btn content="Edit Lists" type={isEditModeList ? 'red' : 'green'} onClick={handleToggleEditModeList} />;
+  const BottomComponentLists: React.FC = () => <Btn content={ isEditModeList ? 'Done' : 'Edit List'} type='green' onClick={handleToggleEditModeList} />;
 
   const TopComponentProductList: React.FC = () => <CreateBar content="Add" placeholder='Product name...' type='text' value='' onCreate={() => { }} />;
   const CenterComponentProductList: React.FC = () => (
@@ -129,7 +129,7 @@ function App() {
         />
       )}
     />);
-  const BottomComponentProductList: React.FC = () => <Btn content="Edit Products" type={isEditModeProduct ? 'red' : 'green'} onClick={handleToggleEditModeProduct} />;
+  const BottomComponentProductList: React.FC = () => <Btn content={ isEditModeProduct ? 'Done' : 'Edit Products'} type='green' onClick={handleToggleEditModeProduct} />;
 
 
   return (
