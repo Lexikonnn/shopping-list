@@ -1,3 +1,4 @@
+import React from 'react';
 import './ListEntry.css';
 import Btn from '../common/button/Btn';
 import InputField from '../common/inputField/InputField';
@@ -10,7 +11,13 @@ type ListEntryProps = {
   isEditModeList: boolean;
 };
 
-const ListEntry: React.FC<ListEntryProps> = ({ id, name, isCompleted, onEntryClick, isEditModeList }) => {
+const ListEntry: React.FC<ListEntryProps> = ({
+  id,
+  name,
+  isCompleted = false, // default value to avoid undefined
+  onEntryClick,
+  isEditModeList
+}) => {
 
   const handleClick = () => {
     if (onEntryClick) {
@@ -21,13 +28,21 @@ const ListEntry: React.FC<ListEntryProps> = ({ id, name, isCompleted, onEntryCli
   return (
     <div className={`list-container ${isCompleted ? 'completed' : ''}`}>
       <div className='list-wrapper'>
-        {isEditModeList ? <InputField placeholder='Name' value={ name } type='text'/> : <h4 className='card-title'>{name}</h4>}
+        {isEditModeList ? (
+          <InputField 
+            placeholder='Name' 
+            value={name} 
+            type='text' 
+          />
+        ) : (
+          <h4 className='card-title'>{name}</h4>
+        )}
       </div>
       <div className='list-wrapper'>
         <Btn
-          content={ isCompleted === true ? 'Completed' : isEditModeList === true ? 'Delete' : 'View' }
-          type={ isCompleted === true ? 'outline' : isEditModeList === true ? 'red' : 'green' }
-          onClick={ isEditModeList ? () => {} : handleClick }
+          content={isCompleted ? 'Completed' : isEditModeList ? 'Delete' : 'View'}
+          type={isCompleted ? 'outline' : isEditModeList ? 'red' : 'green'}
+          onClick={isEditModeList ? () => {/* Handle delete logic here if needed */} : handleClick}
         />
       </div>
     </div>

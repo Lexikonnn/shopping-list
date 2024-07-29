@@ -9,29 +9,14 @@ import Btn from './components/common/button/Btn';
 import { handleProductCheck } from './components/utilities/ProductCheck';
 
 
-const products = [
-  { id: 1, name: 'Mléko', listId: 1 },
-  { id: 2, name: 'Chleba', listId: 1 },
-  { id: 3, name: 'Máslo', listId: 1 },
-  { id: 4, name: 'Piškoty', listId: 2 },
-  { id: 5, name: 'Zelí', listId: 2 },
-  { id: 6, name: 'Brambory', listId: 3 },
-];
-
-const lists = [
-  { id: 1, name: 'Pondělí' },
-  { id: 2, name: 'Tesco' },
-  { id: 3, name: 'Babička' },
-  { id: 4, name: 'Soused' },
-
-];
-
 
 type Product = {
   id: number;
   name: string;
   listId: number;
   isChecked: boolean;
+  products: any;
+  product_name: string;
 };
 
 type List = {
@@ -45,24 +30,52 @@ function App() {
   const [isEditModeList, setIsEditModeList] = useState<boolean>(false);
   const [isEditModeProduct, setIsEditModeProduct] = useState<boolean>(false);
   const [selectedListId, setSelectedListId] = useState<number | null>(null);
-  const [productStates, setProductStates] = useState<Record<number, boolean>>(
-    products.reduce((acc, product) => ({ ...acc, [product.id]: false }), {})
-  );
+  const [lists, setLists] = useState<List[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [productStates, setProductStates] = useState<Record<number, boolean>>({});
 
 
-  /*useEffect(() => {
+
+
+
+
+  useEffect(() => {
     const fetchLists = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/api/lists');
-        setListsState(response.data);
-      } catch (error) {
-        console.error('Failed to fetch lists', error);
-      }
+        try {
+            const response = await axios.get('http://localhost:3000/lists');
+            const lists = response.data.map((item: any) => ({
+                id: item._id,
+                name: item.list_name,
+                products: item.products.map((product: any) => ({
+                    id: product._id,
+                    name: product.product_name,
+                    listId: item._id,
+                    isChecked: false // or some default value
+                }))
+            }));
+            setLists(lists);
+
+            // Optional: Flatten products to be accessible globally
+            const allProducts = lists.flatMap((list: any) => list.products);
+            setProducts(allProducts);
+        } catch (error) {
+            console.error('Failed to fetch lists', error);
+        }
     };
 
     fetchLists();
-  }, []);
-*/
+}, []);
+
+
+
+
+
+
+
+
+
+
+
 
   const handleViewList = (listId: number) => {
     setSelectedListId(listId);
@@ -70,6 +83,8 @@ function App() {
 
 
   const filteredProducts = products.filter(product => product.listId === selectedListId);
+  console.log('Filtered products:', filteredProducts);
+
 
   const isListCompleted = (listId: number) => {
     const listProducts = products.filter(product => product.listId === listId);
@@ -91,19 +106,11 @@ function App() {
     return selectedList ? selectedList.name : 'Select a list';
   };
 
-  /*const handleCreateList = async (name: string) => {
-    try {
-      const response = await axios.post('http://localhost:3001/api/lists', { name });
-      setListsState(prevLists => [...prevLists, response.data]);
-    } catch (error) {
-      console.error('Failed to create list', error);
-    }
-  };*/
 
 
 
 
-  const TopComponentLists: React.FC = () => <CreateBar content="Create" placeholder='List name...' type='text' value='' onCreate={() => {}} />;
+  const TopComponentLists: React.FC = () => <CreateBar content="Create" placeholder='List name...' type='text' value='' onCreate={() => { }} />;
   const CenterComponentLists: React.FC = () => <EntitiesRender entities={lists} EntryComponent={({ id, name }) => (
     <ListEntry
       id={id}
@@ -113,7 +120,7 @@ function App() {
       isEditModeList={isEditModeList}
     />
   )} onEntryClick={handleViewList} />
-  const BottomComponentLists: React.FC = () => <Btn content={ isEditModeList ? 'Done' : 'Edit List'} type='green' onClick={handleToggleEditModeList} />;
+  const BottomComponentLists: React.FC = () => <Btn content={isEditModeList ? 'Done' : 'Edit List'} type='green' onClick={handleToggleEditModeList} />;
 
   const TopComponentProductList: React.FC = () => <CreateBar content="Add" placeholder='Product name...' type='text' value='' onCreate={() => { }} />;
   const CenterComponentProductList: React.FC = () => (
@@ -129,7 +136,7 @@ function App() {
         />
       )}
     />);
-  const BottomComponentProductList: React.FC = () => <Btn content={ isEditModeProduct ? 'Done' : 'Edit Products'} type='green' onClick={handleToggleEditModeProduct} />;
+  const BottomComponentProductList: React.FC = () => <Btn content={isEditModeProduct ? 'Done' : 'Edit Products'} type='green' onClick={handleToggleEditModeProduct} />;
 
 
   return (
