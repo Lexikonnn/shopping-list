@@ -7,130 +7,74 @@ import CardLayout from './components/layouts/cardLayout/CardLayout';
 import EntitiesRender from './components/utilities/entitiesRender/EntitiesRender';
 import Btn from './components/common/button/Btn';
 import { handleProductCheck } from './components/utilities/ProductCheck';
-
-
-const products = [
-  { id: 1, name: 'Mléko', listId: 1 },
-  { id: 2, name: 'Chleba', listId: 1 },
-  { id: 3, name: 'Máslo', listId: 1 },
-  { id: 4, name: 'Piškoty', listId: 2 },
-  { id: 5, name: 'Zelí', listId: 2 },
-  { id: 6, name: 'Brambory', listId: 3 },
-];
-
-const lists = [
-  { id: 1, name: 'Pondělí' },
-  { id: 2, name: 'Tesco' },
-  { id: 3, name: 'Babička' },
-  { id: 4, name: 'Soused' },
-
-];
-
-
-type Product = {
-  id: number;
-  name: string;
-  listId: number;
-  isChecked: boolean;
-};
-
-type List = {
-  id: number;
-  name: string;
-};
+import { isListCompleted } from './components/utilities/isListCompleted';
+import { fetchLists } from './hooks/UseFetchLists';
+import { List } from './components/utilities/Types';
+import { handleCreateListClick } from './components/utilities/CreateListClick';
+import  handleViewList  from './components/utilities/ViewList';
+import handleToggleEditModeList from './components/utilities/ToggleEditModeList';
+import getSelectedListName from './components/utilities/GetSelectedListName';
+import getFilteredProducts from './components/utilities/FilteredProducts';
 
 
 function App() {
-
   const [isEditModeList, setIsEditModeList] = useState<boolean>(false);
   const [isEditModeProduct, setIsEditModeProduct] = useState<boolean>(false);
-  const [selectedListId, setSelectedListId] = useState<number | null>(null);
-  const [productStates, setProductStates] = useState<Record<number, boolean>>(
-    products.reduce((acc, product) => ({ ...acc, [product.id]: false }), {})
-  );
+  const [selectedListId, setSelectedListId] = useState<string | null>(null);
+  const [productStates, setProductStates] = useState<Record<string, boolean>>({});
+  const [lists, setLists] = useState<List[]>([]);
+  const [listProductStates, setListProductStates] = useState<Record<string, Record<string, boolean>>>({});
 
-
-  /*useEffect(() => {
-    const fetchLists = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/api/lists');
-        setListsState(response.data);
-      } catch (error) {
-        console.error('Failed to fetch lists', error);
-      }
-    };
-
-    fetchLists();
+  useEffect(() => {
+    fetchLists(setLists, setProductStates, setListProductStates);
   }, []);
-*/
 
-  const handleViewList = (listId: number) => {
-    setSelectedListId(listId);
+  const filteredProducts = getFilteredProducts(lists, selectedListId);
+
+  const handleProductCheckWrapper = (listId: string, productId: string) => {
+    handleProductCheck(
+      listId,
+      productId,
+      productStates,
+      setProductStates,
+      setListProductStates
+    );
   };
 
-
-  const filteredProducts = products.filter(product => product.listId === selectedListId);
-
-  const isListCompleted = (listId: number) => {
-    const listProducts = products.filter(product => product.listId === listId);
-    return listProducts.length > 0 && listProducts.every((product) => productStates[product.id]);
-  };
-
-
-  const handleToggleEditModeList = () => {
-    setIsEditModeList(!isEditModeList);
-  };
-
-  const handleToggleEditModeProduct = () => {
-    setIsEditModeProduct(!isEditModeProduct);
-  };
-
-
-  const getSelectedListName = () => {
-    const selectedList = lists.find(list => list.id === selectedListId);
-    return selectedList ? selectedList.name : 'Select a list';
-  };
-
-  /*const handleCreateList = async (name: string) => {
-    try {
-      const response = await axios.post('http://localhost:3001/api/lists', { name });
-      setListsState(prevLists => [...prevLists, response.data]);
-    } catch (error) {
-      console.error('Failed to create list', error);
-    }
-  };*/
-
-
-
-
-  const TopComponentLists: React.FC = () => <CreateBar content="Create" placeholder='List name...' type='text' value='' onCreate={() => {}} />;
-  const CenterComponentLists: React.FC = () => <EntitiesRender entities={lists} EntryComponent={({ id, name }) => (
-    <ListEntry
-      id={id}
-      name={name}
-      isCompleted={isListCompleted(id)}
-      onEntryClick={handleViewList}
-      isEditModeList={isEditModeList}
+  const TopComponentLists: React.FC = () => <CreateBar content="Create" placeholder='List name...' type='text' value='' onCreate={(name) => handleCreateListClick(name, setLists)} />;
+  const CenterComponentLists: React.FC = () => (
+    <EntitiesRender
+      entities={lists}
+      EntryComponent={({ id, name }) => (
+        <ListEntry
+          id={id}
+          name={name}
+          isCompleted={isListCompleted(id, lists, listProductStates)}
+          onEntryClick={() => handleViewList(id, setSelectedListId)}
+          isEditModeList={isEditModeList}
+        />
+      )}
+      onEntryClick={(id) => handleViewList(id, setSelectedListId)}
     />
-  )} onEntryClick={handleViewList} />
-  const BottomComponentLists: React.FC = () => <Btn content={ isEditModeList ? 'Done' : 'Edit List'} type='green' onClick={handleToggleEditModeList} />;
+  );
+  const BottomComponentLists: React.FC = () => <Btn content={isEditModeList ? 'Done' : 'Edit List'} type='green' onClick={() => handleToggleEditModeList(isEditModeList, setIsEditModeList)} />;
 
-  const TopComponentProductList: React.FC = () => <CreateBar content="Add" placeholder='Product name...' type='text' value='' onCreate={() => { }} />;
-  const CenterComponentProductList: React.FC = () => (
+  const TopComponentProduct: React.FC = () => <CreateBar content="Add" placeholder='Product name...' type='text' value='' onCreate={() => { }} />;
+  const CenterComponentProduct: React.FC = () => (
     <EntitiesRender
       entities={filteredProducts}
       EntryComponent={({ id, name }) => (
         <ProductEntry
           id={id}
           name={name}
-          isChecked={productStates[id]}
+          isChecked={productStates[id] || false}
           isEditModeProduct={isEditModeProduct}
-          onCheck={() => handleProductCheck(id, productStates, setProductStates)}
+          onCheck={() => handleProductCheckWrapper(selectedListId || '', id)}
         />
       )}
-    />);
-  const BottomComponentProductList: React.FC = () => <Btn content={ isEditModeProduct ? 'Done' : 'Edit Products'} type='green' onClick={handleToggleEditModeProduct} />;
-
+    />
+  );
+  const BottomComponentProduct: React.FC = () => <Btn content={isEditModeProduct ? 'Done' : 'Edit Products'} type='green' onClick={() => handleToggleEditModeList(isEditModeProduct, setIsEditModeProduct)} />;
 
   return (
     <div className='app-container'>
@@ -139,12 +83,11 @@ function App() {
         <CardLayout title='Your Lists' top={TopComponentLists} center={CenterComponentLists} bottom={BottomComponentLists} />
         {selectedListId && (
           <div className='card-section'>
-            <CardLayout title={getSelectedListName()} top={TopComponentProductList} center={CenterComponentProductList} bottom={BottomComponentProductList} />
+            <CardLayout title={getSelectedListName(lists, selectedListId)} top={TopComponentProduct} center={CenterComponentProduct} bottom={BottomComponentProduct} />
           </div>
         )}
       </div>
     </div>
   );
 }
-
 export default App;

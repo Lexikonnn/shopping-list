@@ -1,12 +1,24 @@
 
 export const handleProductCheck = (
-    productId: number,
-    productStates: Record<number, boolean>,
-    setProductStates: React.Dispatch<React.SetStateAction<Record<number, boolean>>>
+  listId: string,
+  productId: string,
+  productStates: Record<string, boolean>,
+  setProductStates: React.Dispatch<React.SetStateAction<Record<string, boolean>>>,
+  setListProductStates: React.Dispatch<React.SetStateAction<Record<string, Record<string, boolean>>>>
+) => {
+  // Update the product state
+  setProductStates(prevState => ({
+    ...prevState,
+    [productId]: !prevState[productId] // Toggle the product check state
+  }));
 
-  ) => {
-    setProductStates((prevStates) => ({
-      ...prevStates,
-      [productId]: !prevStates[productId],
-    }));
-  };
+  // Update listProductStates
+  setListProductStates(prevState => ({
+    ...prevState,
+    [listId]: {
+      ...prevState[listId],
+      [productId]: !prevState[listId]?.[productId] // Toggle the product check state
+    }
+  }));
+};
+

@@ -1,14 +1,14 @@
 import './EntitiesRender.css';
 
 type Entity = {
-  id: number;
+  id: string;
   name: string;
 };
 
 type EntitiesRenderProps = {
   entities: Entity[];
-  EntryComponent: React.FC<{ id: number; name: string; onEntryClick?: (id: number) => void }>;
-  onEntryClick?: (id: number) => void;
+  EntryComponent: React.FC<{ id: string; name: string; onEntryClick?: (id: string) => void }>;
+  onEntryClick?: (id: string) => void;
 };
 
 const EntitiesRender: React.FC<EntitiesRenderProps> = ({ entities, EntryComponent, onEntryClick }) => {

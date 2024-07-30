@@ -3,10 +3,10 @@ import Btn from '../common/button/Btn';
 import InputField from '../common/inputField/InputField';
 
 type ListEntryProps = {
-  id: number;
+  id: string;
   name: string;
-  isCompleted?: boolean;
-  onEntryClick?: (listId: number) => void;
+  isCompleted: boolean;
+  onEntryClick?: (listId: string) => void;
   isEditModeList: boolean;
 };
 
