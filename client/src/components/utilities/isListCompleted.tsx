@@ -20,7 +20,6 @@ export const isListCompleted = (listId: string, lists: List[], listProductStates
   
     console.log('Product States for List:', productStatesForList);
   
-    // Check if all products in the list are checked
     const allProductsChecked = list.products.every(product => productStatesForList[product.id] === true);
   
     console.log(`List ID: ${list.id}, List Name: ${list.name}, Is Completed: ${allProductsChecked}`);

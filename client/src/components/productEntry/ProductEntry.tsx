@@ -1,5 +1,4 @@
 import Checkbox from '../common/checkbox/Checkbox';
-import Btn from '../common/button/Btn';
 import IconBin from '../../assets/ico-bin.svg';
 import InputField from '../common/inputField/InputField';
 import './ProductEntry.css';

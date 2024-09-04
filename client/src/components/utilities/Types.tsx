@@ -1,4 +1,4 @@
-// Definice typu pro produkt
+
 export type Product = {
     id: string;
     name: string;
@@ -6,7 +6,7 @@ export type Product = {
     isChecked: boolean;
   };
   
-  // Definice typu pro seznam
+
   export type List = {
     id: string;
     name: string;

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import ListEntry from './components/listEntry/ListEntry';
 import CreateBar from './components/createBar/CreateBar';
 import ProductEntry from './components/productEntry/ProductEntry';

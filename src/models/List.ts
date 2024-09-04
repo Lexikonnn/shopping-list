@@ -1,20 +1,20 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
-// Definice schématu pro produkt
+
 const productSchema = new Schema({
-  _id: { type: Number, required: true }, // ID produktu je číslo
-  checked: { type: Boolean, default: false }, // Kontrolní stav jako boolean
-  name: { type: String, required: true } // Název produktu
+  _id: { type: Number, required: true }, 
+  checked: { type: Boolean, default: false }, 
+  name: { type: String, required: true }
 });
 
-// Definice schématu pro seznam
+
 const listSchema = new Schema({
-  name: { type: String, required: true }, // Název seznamu
-  completed: { type: Boolean, default: false }, // Dokončeno jako boolean
-  products: [productSchema] // Pole produktů
+  name: { type: String, required: true }, 
+  completed: { type: Boolean, default: false }, 
+  products: [productSchema] 
 });
 
-// Definice modelu
+
 const List = mongoose.model<ListDocument>('List', listSchema);
 
 interface Product {
